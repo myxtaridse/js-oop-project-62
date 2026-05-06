@@ -4,11 +4,11 @@ export default class StringValidator {
   }
 
   isString(data) {
-    return typeof data === 'string'
+    return typeof data === 'string' && data.length > 0
   }
 
   required() {
-    this.checks.required = v => typeof v === 'string' && v.length > 0
+    this.checks.required = v => this.isString(v)
     return this
   }
 
