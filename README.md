@@ -22,7 +22,7 @@ cd js-oop-project-62
 make install
 ```
 
-# Usage
+## Usage
 ```JavaScript
 import Validator from './src/index.js';
 const v = new Validator();
@@ -31,13 +31,13 @@ const schema = v.string().required().minLength(5);
 schema.isValid('Hexlet'); // true
 ```
 
-# API / Доступные проверки
+## API / Доступные проверки
 
-## Строки (v.string())
+### Строки (v.string())
 - `required()` - делает поле обязательным
 - `minLength(min)` - устанавливает минимальную длину строки
 - `contains(substring)` - проверка на наличие подстроки
-### Пример
+#### Пример
 ```JavaScript
 const schema = v.string().required().minLength(5).contains('what');
 
@@ -45,11 +45,11 @@ schema.isValid('what does the fox say'); // true
 schema.isValid('the fox barks loudly'); // false
 ```
 
-## Числа (v.number())
+### Числа (v.number())
 - `required()` - делает поле обязательным
 - `positive()` - проверка на положительное число
 - `range(start, end)` - устанавливает диапазон
-### Пример
+#### Пример
 ```JavaScript
 const schema = v.number().required().positive().range(-5, 5);
 
@@ -57,10 +57,10 @@ schema.isValid(5); // true
 schema.isValid(0); // false
 ```
 
-## Массивы (v.array())
+### Массивы (v.array())
 - `required()` - делает поле обязательным
 - `sizeof(size)` - проверка на строгое соответствие длине массива
-### Пример
+#### Пример
 ```JavaScript
 const schema = v.array().required().sizeof(2);
 
@@ -68,9 +68,9 @@ schema.isValid(['hexlet', 'code-basics']); // true
 schema.isValid(['hexlet']); // false
 ```
 
-## Объекты (v.object())
+### Объекты (v.object())
 - `shape({ key: value, ... })` - позволяет описывать валидацию для свойств объекта
-### Пример
+#### Пример
 ```JavaScript
 const schema = v.object();
 schema.shape({
@@ -82,10 +82,10 @@ schema.isValid({ name: 'kolya', age: 100 }); // true
 schema.isValid({ name: '', age: null }); // false
 ```
 
-## Кастомные правила
+### Кастомные правила
 - `addValidator(type, name, fn)` - позволяет добавить свой валидатор для общего класса Validator
 - `test(name, arg)` - вызывает кастомный валидатор на определенном типе Validator (string, number)
-### Пример
+#### Пример
 ```JavaScript
 const v = new Validator();
 
@@ -97,7 +97,7 @@ schema.isValid('Hexlet'); // true
 schema.isValid('exlet'); // false
 ```
 
-# Run tests
+## Run tests
 ```Bash
 make test
 ```
