@@ -1,29 +1,36 @@
 export default class StringValidator {
-    constructor() {
-        this.isRequired = false;
+  constructor() {
+    this.isRequired = false
+    this.minL = 0
+    this.substring = ''
+  }
+
+  required() {
+    this.isRequired = true
+    return this
+  }
+
+  minLength(min) {
+    this.minL = min
+    return this
+  }
+
+  contains(str) {
+    this.substring = str
+    return this
+  }
+
+  isValid(str) {
+    const isValueEmpty = str === '' || typeof str !== 'string'
+    if (this.isRequired && isValueEmpty) {
+      return false
     }
-    required() {
-        this.isRequired = true;
-        return this;
+    if (!this.isRequired && isValueEmpty) {
+      return true
     }
-    minLength(min) {
-        this.minL = min;
-        return this;
+    if (str.length < this.minL || !str.includes(this.substring)) {
+      return false
     }
-    contains(str) {
-        this.containsStr = str;
-        return this;
-    }
-    isString(str) {
-        return typeof str === "string" && str.length > 0;
-    }
-    isValid(str) {
-        if (this.isRequired) {
-            if (!this.isString(str)) return false;
-        }
-        if (!!this.minL && str.length <= this.minL || !!this.containsStr && !str.includes(this.containsStr)) {
-            return false;
-        }
-        return true;
-    }
+    return true
+  }
 }
