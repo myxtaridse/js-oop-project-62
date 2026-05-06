@@ -9,7 +9,12 @@ export default class ObjectValidator {
   }
 
   isValid(obj) {
-    const isValidMap = Object.entries(obj).every(([key, value]) => this.obj[key].isValid(value))
+    const isValueEmpty = o => Object.keys(o).length === 0
+    if (isValueEmpty(this.obj) && (!obj || isValueEmpty(obj))) {
+      return true
+    }
+    const isValidMap = Object.entries(this.obj)
+      .every(([key, value]) => Object.hasOwn(obj, key) && value.isValid(obj[key]))
     return isValidMap
   }
 }

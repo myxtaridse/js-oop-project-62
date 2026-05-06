@@ -33,7 +33,7 @@ export default class NumberValidator {
     if (!this.isRequired && isValueEmpty) {
       return true
     }
-    if (this.isPositive && num < 0) {
+    if (this.isPositive && num <= 0) {
       return false
     }
     if (num < this.rangeObj.start || num > this.rangeObj.end) {
