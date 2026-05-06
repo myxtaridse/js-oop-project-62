@@ -3,6 +3,7 @@ export default class StringValidator {
     this.isRequired = false
     this.minL = 0
     this.substring = ''
+    this.testFnc = null
   }
 
   required() {
@@ -31,6 +32,14 @@ export default class StringValidator {
     if (str.length < this.minL || !str.includes(this.substring)) {
       return false
     }
+    if (this.testFnc && !this.testFnc(str)) {
+      return false
+    }
     return true
+  }
+
+  test(name, arg) {
+    this.testFnc = str => this[name](str, arg)
+    return this
   }
 }

@@ -19,4 +19,14 @@ export default class Validator {
   object() {
     return new ObjectValidator()
   }
+
+  addValidator(type, name, fn) {
+    if (type === 'string') {
+      StringValidator.prototype[name] = fn
+    }
+    if (type === 'number') {
+      NumberValidator.prototype[name] = fn
+    }
+    return this
+  }
 }

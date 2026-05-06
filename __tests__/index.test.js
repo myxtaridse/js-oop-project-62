@@ -79,3 +79,25 @@ test('should validate object shape correctly', () => {
   expect(schema.isValid({ name: '', age: null })).not.toBeTruthy() // false
   expect(schema.isValid({ name: 'ada', age: -5 })).not.toBeTruthy() // false
 })
+
+test('should adding custom validators correctly', () => {
+  const v = new Validator()
+
+  const fnStr = (value, start) => value.startsWith(start)
+
+  v.addValidator('string', 'startWith', fnStr)
+
+  const schemaStr = v.string().test('startWith', 'H')
+
+  expect(schemaStr.isValid('exlet')).not.toBeTruthy() // false
+  expect(schemaStr.isValid('Hexlet')).toBeTruthy() // true
+
+  const fnNum = (value, min) => value >= min
+
+  v.addValidator('number', 'min', fnNum)
+
+  const schemaNum = v.number().test('min', 5)
+
+  expect(schemaNum.isValid(4)).not.toBeTruthy() // false
+  expect(schemaNum.isValid(6)).toBeTruthy() // true
+})

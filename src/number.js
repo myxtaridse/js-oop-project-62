@@ -6,6 +6,7 @@ export default class NumberValidator {
       start: -Infinity,
       end: Infinity,
     }
+    this.testFnc = null
   }
 
   required() {
@@ -35,9 +36,17 @@ export default class NumberValidator {
     if (this.isPositive && num < 0) {
       return false
     }
-    if (num >= this.rangeObj.start && num <= this.rangeObj.end) {
-      return true
+    if (num < this.rangeObj.start || num > this.rangeObj.end) {
+      return false
     }
-    return false
+    if (this.testFnc && !this.testFnc(num)) {
+      return false
+    }
+    return true
+  }
+
+  test(name, arg) {
+    this.testFnc = num => this[name](num, arg)
+    return this
   }
 }
