@@ -1,33 +1,28 @@
 export default class ArrayValidator {
   constructor() {
-    this.isRequired = false
-    this.size = null
+    this.checks = {}
+  }
+
+  isArray(data) {
+    return Array.isArray(data)
   }
 
   required() {
-    this.isRequired = true
+    this.checks.required = v => this.isArray(v)
     return this
   }
 
   sizeof(size) {
-    this.size = size
+    this.checks.sizeof = v => v.length === size
     return this
   }
 
-  isValid(arr) {
-    const hasArray = Array.isArray(arr)
-    if (this.isRequired && !hasArray) {
-      return false
+  isValid(data) {
+    if (!Object.hasOwn(this.checks, 'required')) {
+      if (!this.isArray(data)) {
+        return true
+      }
     }
-    if (!this.isRequired && !hasArray) {
-      return true
-    }
-    if (!this.size) {
-      return true
-    }
-    if (this.size === arr.length) {
-      return true
-    }
-    return false
+    return Object.values(this.checks).every(fn => fn(data))
   }
 }

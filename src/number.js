@@ -1,52 +1,38 @@
 export default class NumberValidator {
   constructor() {
-    this.isRequired = false
-    this.isPositive = false
-    this.rangeObj = {
-      start: -Infinity,
-      end: Infinity,
-    }
-    this.testFnc = null
+    this.checks = {}
+  }
+
+  isNumber(data) {
+    return typeof data === 'number'
   }
 
   required() {
-    this.isRequired = true
+    this.checks.required = v => this.isNumber(v)
     return this
   }
 
   positive() {
-    this.isPositive = true
+    this.checks.positive = v => v > 0
     return this
   }
 
   range(start, end) {
-    this.rangeObj['start'] = start
-    this.rangeObj['end'] = end
+    this.checks.range = v => v >= start && v <= end
     return this
   }
 
-  isValid(num) {
-    const isValueEmpty = typeof num !== 'number'
-    if (this.isRequired && isValueEmpty) {
-      return false
+  isValid(data) {
+    if (!Object.hasOwn(this.checks, 'required')) {
+      if (!this.isNumber(data)) {
+        return true
+      }
     }
-    if (!this.isRequired && isValueEmpty) {
-      return true
-    }
-    if (this.isPositive && num <= 0) {
-      return false
-    }
-    if (num < this.rangeObj.start || num > this.rangeObj.end) {
-      return false
-    }
-    if (this.testFnc && !this.testFnc(num)) {
-      return false
-    }
-    return true
+    return Object.values(this.checks).every(fn => fn(data))
   }
 
   test(name, arg) {
-    this.testFnc = num => this[name](num, arg)
+    this.checks[name] = num => this[name](num, arg)
     return this
   }
 }

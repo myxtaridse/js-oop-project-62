@@ -1,45 +1,38 @@
 export default class StringValidator {
   constructor() {
-    this.isRequired = false
-    this.minL = 0
-    this.substring = ''
-    this.testFnc = null
+    this.checks = {}
+  }
+
+  isString(data) {
+    return typeof data === 'string'
   }
 
   required() {
-    this.isRequired = true
+    this.checks.required = v => typeof v === 'string' && v.length > 0
     return this
   }
 
   minLength(min) {
-    this.minL = min
+    this.checks.minLength = v => v.length > min
     return this
   }
 
-  contains(str) {
-    this.substring = str
+  contains(substring) {
+    this.checks.contains = v => v.includes(substring)
     return this
   }
 
-  isValid(str) {
-    const isValueEmpty = str === '' || typeof str !== 'string'
-    if (this.isRequired && isValueEmpty) {
-      return false
+  isValid(data) {
+    if (!Object.hasOwn(this.checks, 'required')) {
+      if (!this.isString(data)) {
+        return true
+      }
     }
-    if (!this.isRequired && isValueEmpty) {
-      return true
-    }
-    if (str.length < this.minL || !str.includes(this.substring)) {
-      return false
-    }
-    if (this.testFnc && !this.testFnc(str)) {
-      return false
-    }
-    return true
+    return Object.values(this.checks).every(fn => fn(data))
   }
 
   test(name, arg) {
-    this.testFnc = str => this[name](str, arg)
+    this.checks[name] = str => this[name](str, arg)
     return this
   }
 }
